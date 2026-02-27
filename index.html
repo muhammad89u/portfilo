@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muhammad Salah — Developer Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=Barlow:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050a0e;--surface:#0b1520;--accent:#00d4ff;--accent3:#7c3aed;--text:#e2e8f0;--muted:#64748b;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;overflow-x:hidden;cursor:none;}
+.cursor{width:12px;height:12px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;mix-blend-mode:screen;}
+.cursor-ring{width:40px;height:40px;border:1px solid rgba(0,212,255,.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s;}
+nav{position:fixed;top:0;width:100%;z-index:100;padding:24px 60px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);background:rgba(5,10,14,.85);border-bottom:1px solid rgba(0,212,255,.1);}
+.nav-logo{font-family:'Bebas Neue';font-size:28px;letter-spacing:4px;color:var(--accent);text-shadow:0 0 40px rgba(0,212,255,.3);}
+.nav-links{display:flex;gap:40px;list-style:none;}
+.nav-links a{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);text-decoration:none;letter-spacing:2px;transition:color .3s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .3s;}
+.nav-links a:hover{color:var(--accent);}
+.nav-links a:hover::after{width:100%;}
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,212,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.04) 1px,transparent 1px);background-size:60px 60px;animation:gridMove 20s linear infinite;}
+@keyframes gridMove{100%{transform:translateY(60px);}}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);animation:orbFloat 8s ease-in-out infinite;}
+.orb1{width:600px;height:600px;background:radial-gradient(circle,rgba(0,212,255,.15),transparent 70%);top:-100px;right:-100px;}
+.orb2{width:400px;height:400px;background:radial-gradient(circle,rgba(124,58,237,.2),transparent 70%);bottom:-50px;left:100px;animation-delay:-4s;}
+@keyframes orbFloat{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-30px) scale(1.05);}}
+.hero-content{position:relative;z-index:2;text-align:center;}
+.hero-tag{font-family:'Space Mono',monospace;font-size:13px;color:var(--accent);letter-spacing:4px;margin-bottom:20px;opacity:0;animation:fadeUp .8s .3s forwards;}
+.hero-name{font-family:'Bebas Neue';font-size:clamp(80px,14vw,180px);line-height:.9;letter-spacing:4px;background:linear-gradient(135deg,#fff 0%,var(--accent) 50%,var(--accent3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0;animation:fadeUp .8s .5s forwards;position:relative;}
+.hero-name::before,.hero-name::after{content:attr(data-text);position:absolute;inset:0;font-family:'Bebas Neue';font-size:inherit;line-height:inherit;letter-spacing:inherit;background:linear-gradient(135deg,#fff 0%,var(--accent) 50%,var(--accent3) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-name::before{clip-path:polygon(0 25%,100% 25%,100% 45%,0 45%);animation:g1 5s infinite;}
+.hero-name::after{clip-path:polygon(0 65%,100% 65%,100% 80%,0 80%);animation:g2 5s infinite;}
+@keyframes g1{0%,88%,100%{transform:translateX(0);opacity:0;}90%{transform:translateX(-5px);opacity:1;}93%{transform:translateX(5px);opacity:1;}96%{transform:translateX(0);opacity:0;}}
+@keyframes g2{0%,86%,100%{transform:translateX(0);opacity:0;}88%{transform:translateX(4px);opacity:1;}92%{transform:translateX(-4px);opacity:1;}95%{transform:translateX(0);opacity:0;}}
+.hero-sub{font-size:16px;font-weight:300;color:var(--muted);margin-top:20px;letter-spacing:6px;text-transform:uppercase;font-family:'Space Mono',monospace;overflow:hidden;white-space:nowrap;border-right:2px solid var(--accent);width:0;display:inline-block;animation:typewrite 2.5s steps(24) 1s forwards,blink .8s 1s infinite;}
+@keyframes typewrite{to{width:100%;}}
+@keyframes blink{50%{border-color:transparent;}}
+.hero-cta{margin-top:50px;opacity:0;animation:fadeUp .8s 1s forwards;display:flex;gap:20px;justify-content:center;flex-wrap:wrap;}
+.btn{font-family:'Space Mono',monospace;font-size:13px;letter-spacing:3px;padding:16px 40px;background:transparent;border:1px solid var(--accent);color:var(--accent);text-decoration:none;position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:10px;transition:color .3s;}
+.btn::before{content:'';position:absolute;inset:0;background:var(--accent);transform:translateX(-101%);transition:transform .4s cubic-bezier(.77,0,.18,1);z-index:-1;}
+.btn:hover{color:var(--bg);}
+.btn:hover::before{transform:translateX(0);}
+.btn-gh{border-color:rgba(255,255,255,.2);color:var(--text);}
+.btn-gh::before{background:rgba(255,255,255,.15);}
+.btn-gh:hover{color:var(--text);}
+.scroll-ind{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeUp .8s 1.5s forwards;}
+.scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--accent),transparent);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:.3;transform:scaleY(1);}50%{opacity:1;transform:scaleY(1.2);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
+.sec{padding:120px 60px;max-width:1200px;margin:0 auto;}
+.sec-label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:5px;color:var(--accent);margin-bottom:16px;}
+.sec-title{font-family:'Bebas Neue';font-size:clamp(50px,7vw,90px);line-height:1;letter-spacing:2px;margin-bottom:20px;}
+.divider{width:60px;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent3));margin-bottom:50px;}
+#about-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.about-text p{font-size:17px;line-height:1.9;color:#94a3b8;margin-bottom:20px;}
+.about-info{margin-top:40px;display:flex;flex-direction:column;gap:14px;}
+.info-row{display:flex;gap:16px;font-family:'Space Mono',monospace;font-size:13px;align-items:flex-start;}
+.info-row .lbl{color:var(--muted);min-width:70px;}
+.info-row a{color:var(--accent);text-decoration:none;}
+.info-row a:hover{text-decoration:underline;}
+.avatar-wrap{display:flex;justify-content:center;position:relative;}
+.avatar-box{width:300px;height:380px;background:linear-gradient(135deg,var(--surface) 0%,#0f2030 100%);border:1px solid rgba(0,212,255,.2);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.avatar-box::before{content:'';position:absolute;inset:-50%;background:conic-gradient(from 0deg,transparent,rgba(0,212,255,.1) 60deg,transparent 120deg);animation:spin 6s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.initials{font-family:'Bebas Neue';font-size:100px;color:rgba(0,212,255,.15);position:relative;z-index:1;letter-spacing:8px;}
+.corner{position:absolute;width:20px;height:20px;border-color:var(--accent);border-style:solid;}
+.tl{top:12px;left:12px;border-width:2px 0 0 2px;}
+.tr{top:12px;right:12px;border-width:2px 2px 0 0;}
+.bl{bottom:12px;left:12px;border-width:0 0 2px 2px;}
+.br{bottom:12px;right:12px;border-width:0 2px 2px 0;}
+.fbadge{position:absolute;background:var(--surface);border:1px solid rgba(0,212,255,.3);padding:12px 20px;font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:2px;}
+.fb1{bottom:20px;left:-20px;animation:fl 4s ease-in-out infinite;}
+.fb2{top:30px;right:-20px;animation:fl 4s ease-in-out infinite -2s;}
+@keyframes fl{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+
+/* SKILLS - photo-style logo badges */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px;}
+.skill-card{background:var(--surface);border:1px solid rgba(255,255,255,.05);padding:28px 20px;text-align:center;position:relative;overflow:hidden;transition:border-color .3s,transform .3s;}
+.skill-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(0,212,255,.06));opacity:0;transition:opacity .3s;}
+.skill-card:hover{border-color:var(--accent);transform:translateY(-8px);}
+.skill-card:hover::after{opacity:1;}
+.logo-badge{width:60px;height:60px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-weight:900;font-size:13px;letter-spacing:1px;transition:transform .3s;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.4);}
+.skill-card:hover .logo-badge{transform:scale(1.12) rotate(-3deg);}
+.sk-name{font-family:'Space Mono',monospace;font-size:12px;letter-spacing:2px;color:var(--muted);transition:color .3s;}
+.skill-card:hover .sk-name{color:var(--accent);}
+.sk-bar{margin-top:14px;height:2px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden;}
+.sk-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent3));transition:width 1.2s cubic-bezier(.77,0,.18,1) .2s;border-radius:2px;}
+
+/* Individual logo badge styles */
+.logo-html{background:linear-gradient(145deg,#e44d26,#f06529);color:#fff;}
+.logo-css{background:linear-gradient(145deg,#1572b6,#2196f3);color:#fff;}
+.logo-js{background:linear-gradient(145deg,#f7df1e,#f0c200);color:#333;}
+.logo-csharp{background:linear-gradient(145deg,#68217a,#9b4f96);color:#fff;}
+.logo-sql{background:linear-gradient(145deg,#cc2927,#e53935);color:#fff;}
+.logo-mysql{background:linear-gradient(145deg,#00618a,#0277bd);color:#fff;}
+.logo-flutter{background:linear-gradient(145deg,#027dfd,#29b6f6);color:#fff;}
+.logo-git{background:linear-gradient(145deg,#f05032,#e64a19);color:#fff;}
+.logo-php{background:linear-gradient(145deg,#4f5b93,#6881c7);color:#fff;}
+
+/* Logo inner decorations */
+.logo-badge svg{width:36px;height:36px;}
+
+/* PROJECTS */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px;}
+.project-card{background:var(--surface);border:1px solid rgba(255,255,255,.05);overflow:hidden;position:relative;transition:border-color .3s,transform .3s;}
+.project-card:hover{border-color:var(--accent);transform:translateY(-6px);}
+.project-thumb{height:200px;position:relative;overflow:hidden;}
+.project-thumb-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative;}
+.project-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,var(--surface) 100%);}
+.project-num{position:absolute;top:16px;right:16px;font-family:'Bebas Neue';font-size:48px;color:rgba(255,255,255,.06);line-height:1;z-index:1;}
+.project-body{padding:28px;}
+.project-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.tag{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--accent);border:1px solid rgba(0,212,255,.3);padding:4px 10px;}
+.project-title{font-family:'Bebas Neue';font-size:28px;letter-spacing:2px;margin-bottom:10px;}
+.project-desc{font-size:14px;color:#94a3b8;line-height:1.7;margin-bottom:20px;}
+.project-links{display:flex;gap:14px;}
+.project-link{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--muted);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:color .3s;}
+.project-link:hover{color:var(--accent);}
+.project-link svg{width:14px;height:14px;}
+.project-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent3));transform:scaleX(0);transform-origin:left;transition:transform .4s;}
+.project-card:hover::before{transform:scaleX(1);}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:60px;}
+.contact-item{background:var(--surface);padding:40px 20px;border:1px solid rgba(255,255,255,.05);text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:12px;transition:border-color .3s,background .3s;}
+.contact-item:hover{border-color:var(--accent);background:rgba(0,212,255,.05);}
+.ci-icon{width:32px;height:32px;}
+.ci-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--muted);}
+.ci-val{font-size:13px;color:var(--text);word-break:break-all;text-align:center;}
+footer{border-top:1px solid rgba(255,255,255,.05);padding:40px 60px;display:flex;justify-content:space-between;align-items:center;}
+.ft-name{font-family:'Bebas Neue';font-size:22px;letter-spacing:4px;color:var(--muted);}
+.ft-copy{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:2px;}
+.reveal{opacity:0;transform:translateY(50px);transition:opacity .8s,transform .8s cubic-bezier(.17,.67,.29,1);}
+.reveal.in{opacity:1;transform:translateY(0);}
+.d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}
+#canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+@media(max-width:900px){.contact-grid{grid-template-columns:repeat(2,1fr);}.projects-grid{grid-template-columns:1fr;}}
+@media(max-width:768px){nav{padding:20px 24px;}.nav-links{display:none;}.sec{padding:80px 24px;}#about-inner{grid-template-columns:1fr;}.contact-grid{grid-template-columns:1fr;}footer{flex-direction:column;gap:16px;text-align:center;}.avatar-wrap{display:none;}}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<nav>
+  <div class="nav-logo">MS</div>
+  <ul class="nav-links">
+    <li><a href="#about">ABOUT</a></li>
+    <li><a href="#skills">SKILLS</a></li>
+    <li><a href="#projects">PROJECTS</a></li>
+    <li><a href="#contact">CONTACT</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="hero-content">
+    <p class="hero-tag">// FULL STACK DEVELOPER</p>
+    <h1 class="hero-name" data-text="MUHAMMAD SALAH">MUHAMMAD SALAH</h1>
+    <p class="hero-sub">Building Digital Experiences</p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn">VIEW PROJECTS</a>
+      <a href="https://github.com/" target="_blank" class="btn btn-gh">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        GITHUB
+      </a>
+    </div>
+  </div>
+  <div class="scroll-ind"><div class="scroll-line"></div></div>
+</section>
+
+<!-- ABOUT -->
+<section class="sec" id="about">
+  <div id="about-inner">
+    <div class="about-text">
+      <p class="sec-label reveal">// 01 ABOUT</p>
+      <h2 class="sec-title reveal d1">WHO<br>I AM</h2>
+      <div class="divider reveal d2"></div>
+      <p class="reveal d2">I'm Muhammad Salah, a passionate full-stack developer with expertise spanning web, mobile, and backend technologies. I craft clean, performant solutions that bridge design and engineering.</p>
+      <p class="reveal d3">From elegant user interfaces to robust database architectures, I bring ideas to life with precision and creativity.</p>
+      <div class="about-info reveal d3">
+        <div class="info-row"><span class="lbl">PHONE</span><span><a href="tel:+96407721432713">+964 07721432713</a></span></div>
+        <div class="info-row"><span class="lbl">EMAIL</span><span><a href="mailto:xgxhxgvxvx@gmaiil.com">xgxhxgvxvx@gmaiil.com</a></span></div>
+        <div class="info-row"><span class="lbl">GITHUB</span><span><a href="https://github.com/" target="_blank">github.com/</a></span></div>
+        <div class="info-row"><span class="lbl">BASED</span><span>Iraq</span></div>
+      </div>
+    </div>
+    <div class="avatar-wrap reveal d2">
+      <div class="avatar-box">
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <span class="initials">MS</span>
+      </div>
+      <div class="fbadge fb1">FULL STACK</div>
+      <div class="fbadge fb2">DEVELOPER</div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="sec" id="skills">
+  <p class="sec-label reveal">// 02 SKILLS</p>
+  <h2 class="sec-title reveal d1">TECH<br>STACK</h2>
+  <div class="divider reveal d2"></div>
+  <div class="skills-grid">
+
+    <div class="skill-card reveal d1">
+      <div class="logo-badge logo-html">
+        <svg viewBox="0 0 452 520" fill="none"><path fill="#fff" d="M41 460L0 0h452l-41 460-185 52z" opacity=".15"/><path fill="#fff" d="M226 208h-75l-5-58h80V94H94l13 147h119zm0 147l-64-17-4-46h-56l8 91 116 32z"/><path fill="rgba(255,255,255,.7)" d="M226 208v56h70l-7 74-63 17v59l116-32 9-174zm0-114v56h137l4-56z"/><text x="226" y="300" font-size="120" font-family="Arial Black,sans-serif" font-weight="900" fill="white" text-anchor="middle" opacity=".2">5</text></svg>
+      </div>
+      <div class="sk-name">HTML5</div>
+      <div class="sk-bar"><div class="sk-fill" data-w="95"></div></div>
+    </div>
+
+    <div class="skill-card reveal d1">
+      <div class="logo-badge logo-css">
+        <svg viewBox="0 0 452 520" fill="none"><path fill="#fff" d="M41 460L0 0h452l-41 460-185 52z" opacity=".15"/><path fill="#fff" d="M226 208h-75l-5-58h80V94H94l13 147h119zm0 147l-64-17-4-46h-56l8 91 116 32z"/><path fill="rgba(255,255,255,.7)" d="M226 208v56h70l-7 74-63 17v59l116-32 9-174zm0-114v56h137l4-56z"/><text x="226" y="300" font-size="120" font-family="Arial Black,sans-serif" font-weight="900" fill="white" text-anchor="middle" opacity=".2">3</text></svg>
+      </div>
+      <div class="sk-name">CSS3</div>
+      <div class="sk-bar"><div class="sk-fill" data-w="90"></div></div>
+    </div>
+
+    <div class="skill-card reveal d2">
+      <div class="logo-badge logo-js">
+        <svg viewBox="0 0 100 100"><rect width="100" height="100" fill="rgba(0,0,0,.1)" rx="4"/><text x="12" y="72" font-size="56" font-family="Arial Black,sans-serif" font-weight="900" fill="#333">JS</text></svg>
+      </div>
+      <div class="sk-name">JavaScript</div>
+      <div class="sk-bar"><div class="sk-fill" data-w="88"></div></div>
+    </div>
+
+    <div class="skill-card reveal d2">
+      <div class="logo-badge logo-csharp">
+        <svg viewBox="0 0 100 100"><text x="50" y="68" font-size="52" font-family="Arial Black,sans-serif" font-weight="900" fill="white" text-anchor="middle">C#</text></svg>
+      </div>
+      <div class="sk-name">C#</div>
+      <div class="sk-bar"><div class="sk-fill" data-w="82"></div></div>
+    </div>
+
+    <div class="skill-card reveal d3">
+      <div class="logo-badge logo-sql">
+        <svg viewBox="0 0 100 100"><ellipse cx="50" cy="32" rx="34" ry="13" fill="rgba(255,255,255,.25)"/><rect x="16" y="32" width="68" height="26" fill="rgba(255,255,255,.15)"/><ellipse cx="50" cy="58" rx="34" ry="10" fill="rgba(255,255,255,.2)"/><text x="50" y="86" font-size="20" font-family="Arial Black,sans-serif" font-weight="900" fill="white" text-anchor="middle">SQL</text></svg>
+      </div>
+      <div class="sk-name">SQL</div>
+      <div class="sk-bar"><div class="sk-fill" data-w="85"></div></div>
+    </div>
+
+    <div class="skill-card reveal d3">
+      <div class="logo-badge logo-mysql">
+        <svg viewBox="0 0 100 100"><path fill="rgba(255,255,255,.3)" d="M15 30 Q50 10 85 30 Q50 50 15 30z"/><text x="50" y="62" font-size="16" font-family="Arial Black,sans-serif" font-weight="900" fill="white" text-anchor="middle">MySQL</text><path fill="rgba(228,142,0,.8)" d="M30 68 Q50 60 70 68 Q50 76 30 68z"/></svg>
+      </div>
+      <div class="sk-name">MySQL</div>
+      <div class="sk-bar"><div class="sk-fill" data-w="83"></div></div>
+    </div>
+
+    <div class="skill-card reveal d1">
+      <div class="logo-badge logo-flutter">
+        <svg viewBox="0 0 100 100"><polygon fill="rgba(255,255,255,.9)" points="20,50 55,15 70,15 35,50"/><polygon fill="rgba(255,255,255,.6)" points="55,85 70,85 47,62 32,62"/><polygon fill="rgba(255,255,255,.75)" points="32,62 47,62 35,50 20,50"/></svg>
+      </div>
+      <div class="sk-name">Flutter</div>
+      <div class="sk-bar"><div class="sk-fill" data-w="80"></div></div>
+    </div>
+
+    <div class="skill-card reveal d2">
+      <div class="logo-badge logo-git">
+        <svg viewBox="0 0 100 100"><circle cx="72" cy="28" r="10" fill="none" stroke="white" stroke-width="5"/><circle cx="72" cy="72" r="10" fill="none" stroke="white" stroke-width="5"/><circle cx="28" cy="72" r="10" fill="none" stroke="white" stroke-width="5"/><line x1="72" y1="38" x2="72" y2="62" stroke="white" stroke-width="4"/><path d="M28 62 Q28 40 55 35 Q65 32 72 38" fill="none" stroke="white" stroke-width="4"/></svg>
+      </div>
+      <div class="sk-name">Git</div>
+      <div class="sk-bar"><div class="sk-fill" data-w="88"></div></div>
+    </div>
+
+    <div class="skill-card reveal d3">
+      <div class="logo-badge logo-php">
+        <svg viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="45" ry="22" fill="rgba(255,255,255,.15)"/><text x="50" y="57" font-size="26" font-family="Arial Black,sans-serif" font-weight="900" fill="white" text-anchor="middle">PHP</text></svg>
+      </div>
+      <div class="sk-name">PHP</div>
+      <div class="sk-bar"><div class="sk-fill" data-w="78"></div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="sec" id="projects">
+  <p class="sec-label reveal">// 03 PROJECTS</p>
+  <h2 class="sec-title reveal d1">MY<br>WORK</h2>
+  <div class="divider reveal d2"></div>
+  <div class="projects-grid">
+
+    <div class="project-card reveal d1">
+      <div class="project-thumb" style="background:linear-gradient(135deg,#0d1f3c 0%,#1a3a6e 50%,#0d1f3c 100%);">
+        <div class="project-thumb-inner">
+          <svg width="80" height="80" viewBox="0 0 100 100" opacity=".3"><rect x="10" y="20" width="80" height="60" rx="4" fill="none" stroke="#00d4ff" stroke-width="3"/><line x1="10" y1="35" x2="90" y2="35" stroke="#00d4ff" stroke-width="3"/><circle cx="22" cy="27" r="3" fill="#00d4ff"/><circle cx="33" cy="27" r="3" fill="#00d4ff"/><rect x="20" y="45" width="25" height="4" rx="2" fill="#00d4ff"/><rect x="20" y="55" width="40" height="4" rx="2" fill="#7c3aed"/><rect x="20" y="65" width="30" height="4" rx="2" fill="#00d4ff"/></svg>
+        </div>
+        <div class="project-num">01</div>
+      </div>
+      <div class="project-body">
+        <div class="project-tags"><span class="tag">C#</span><span class="tag">SQL</span><span class="tag">HTML</span><span class="tag">CSS</span></div>
+        <div class="project-title">INVENTORY MANAGEMENT SYSTEM</div>
+        <p class="project-desc">A full-featured inventory system with real-time tracking, reporting dashboards, and role-based access control built with C# and SQL Server backend.</p>
+        <div class="project-links">
+          <a href="https://github.com/" target="_blank" class="project-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            SOURCE CODE
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal d2">
+      <div class="project-thumb" style="background:linear-gradient(135deg,#1a0d3c 0%,#3d1a6e 50%,#1a0d3c 100%);">
+        <div class="project-thumb-inner">
+          <svg width="80" height="80" viewBox="0 0 100 100" opacity=".3"><rect x="30" y="10" width="40" height="70" rx="6" fill="none" stroke="#7c3aed" stroke-width="3"/><rect x="34" y="20" width="32" height="40" rx="2" fill="#7c3aed" opacity=".3"/><circle cx="50" cy="72" r="4" fill="none" stroke="#7c3aed" stroke-width="2.5"/><line x1="38" y1="85" x2="62" y2="85" stroke="#7c3aed" stroke-width="2"/></svg>
+        </div>
+        <div class="project-num">02</div>
+      </div>
+      <div class="project-body">
+        <div class="project-tags"><span class="tag">Flutter</span><span class="tag">MySQL</span><span class="tag">PHP</span></div>
+        <div class="project-title">MOBILE E-COMMERCE APP</div>
+        <p class="project-desc">Cross-platform mobile shopping app built with Flutter featuring product catalog, cart management, and PHP/MySQL backend with REST API integration.</p>
+        <div class="project-links">
+          <a href="https://github.com/" target="_blank" class="project-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            SOURCE CODE
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal d3">
+      <div class="project-thumb" style="background:linear-gradient(135deg,#0d3c1a 0%,#1a6e3d 50%,#0d3c1a 100%);">
+        <div class="project-thumb-inner">
+          <svg width="80" height="80" viewBox="0 0 100 100" opacity=".3"><circle cx="50" cy="50" r="35" fill="none" stroke="#00d4ff" stroke-width="3"/><line x1="50" y1="15" x2="50" y2="85" stroke="#00d4ff" stroke-width="2"/><path d="M15 50 Q50 30 85 50" fill="none" stroke="#00d4ff" stroke-width="2"/><path d="M15 50 Q50 70 85 50" fill="none" stroke="#00d4ff" stroke-width="2"/><line x1="15" y1="50" x2="85" y2="50" stroke="#00d4ff" stroke-width="2"/></svg>
+        </div>
+        <div class="project-num">03</div>
+      </div>
+      <div class="project-body">
+        <div class="project-tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">JS</span><span class="tag">CSS</span></div>
+        <div class="project-title">SCHOOL MANAGEMENT PORTAL</div>
+        <p class="project-desc">Web-based portal for schools with student records, grade management, attendance tracking, and parent communication features using PHP and MySQL.</p>
+        <div class="project-links">
+          <a href="https://github.com/" target="_blank" class="project-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            SOURCE CODE
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal d1">
+      <div class="project-thumb" style="background:linear-gradient(135deg,#3c1a0d 0%,#6e3d1a 50%,#3c1a0d 100%);">
+        <div class="project-thumb-inner">
+          <svg width="80" height="80" viewBox="0 0 100 100" opacity=".3"><rect x="15" y="25" width="70" height="50" rx="4" fill="none" stroke="#ff6b35" stroke-width="3"/><line x1="15" y1="38" x2="85" y2="38" stroke="#ff6b35" stroke-width="2"/><rect x="25" y="48" width="20" height="15" rx="2" fill="#ff6b35" opacity=".4"/><rect x="55" y="48" width="20" height="6" rx="2" fill="#ff6b35" opacity=".4"/><rect x="55" y="58" width="14" height="6" rx="2" fill="#ff6b35" opacity=".4"/></svg>
+        </div>
+        <div class="project-num">04</div>
+      </div>
+      <div class="project-body">
+        <div class="project-tags"><span class="tag">C#</span><span class="tag">SQL Server</span><span class="tag">HTML</span></div>
+        <div class="project-title">HR & PAYROLL SYSTEM</div>
+        <p class="project-desc">Complete human resources management system with employee profiles, payroll calculation, leave management, and detailed reporting in a desktop/web hybrid.</p>
+        <div class="project-links">
+          <a href="https://github.com/" target="_blank" class="project-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            SOURCE CODE
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal d2">
+      <div class="project-thumb" style="background:linear-gradient(135deg,#0d1f3c 0%,#0d3c3c 50%,#0d1f3c 100%);">
+        <div class="project-thumb-inner">
+          <svg width="80" height="80" viewBox="0 0 100 100" opacity=".3"><rect x="20" y="20" width="60" height="60" rx="4" fill="none" stroke="#00d4ff" stroke-width="3"/><rect x="28" y="30" width="44" height="6" rx="2" fill="#00d4ff" opacity=".5"/><rect x="28" y="44" width="30" height="5" rx="2" fill="#00d4ff" opacity=".4"/><rect x="28" y="57" width="38" height="5" rx="2" fill="#7c3aed" opacity=".5"/><circle cx="70" cy="70" r="12" fill="#00d4ff" opacity=".2"/><text x="70" y="75" font-size="12" font-family="monospace" fill="#00d4ff" text-anchor="middle" opacity=".8">API</text></svg>
+        </div>
+        <div class="project-num">05</div>
+      </div>
+      <div class="project-body">
+        <div class="project-tags"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">REST API</span></div>
+        <div class="project-title">REST API BACKEND</div>
+        <p class="project-desc">Scalable RESTful API backend built with PHP featuring JWT authentication, rate limiting, full CRUD operations, and MySQL database with optimized queries.</p>
+        <div class="project-links">
+          <a href="https://github.com/" target="_blank" class="project-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            SOURCE CODE
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card reveal d3">
+      <div class="project-thumb" style="background:linear-gradient(135deg,#1a0d3c 0%,#2d0d4e 50%,#1a0d3c 100%);">
+        <div class="project-thumb-inner">
+          <svg width="80" height="80" viewBox="0 0 100 100" opacity=".3"><rect x="30" y="10" width="40" height="70" rx="6" fill="none" stroke="#7c3aed" stroke-width="3"/><rect x="38" y="20" width="24" height="35" rx="2" fill="#7c3aed" opacity=".3"/><circle cx="50" cy="70" r="5" fill="none" stroke="#7c3aed" stroke-width="2.5"/><line x1="40" y1="30" x2="60" y2="30" stroke="#7c3aed" stroke-width="2"/><line x1="40" y1="38" x2="55" y2="38" stroke="#7c3aed" stroke-width="2"/><line x1="40" y1="46" x2="58" y2="46" stroke="#7c3aed" stroke-width="2"/></svg>
+        </div>
+        <div class="project-num">06</div>
+      </div>
+      <div class="project-body">
+        <div class="project-tags"><span class="tag">Flutter</span><span class="tag">MySQL</span><span class="tag">PHP</span></div>
+        <div class="project-title">TASK MANAGER APP</div>
+        <p class="project-desc">Feature-rich mobile task management app with categories, priorities, reminders, and cloud sync. Built with Flutter for iOS & Android with PHP API backend.</p>
+        <div class="project-links">
+          <a href="https://github.com/" target="_blank" class="project-link">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            SOURCE CODE
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="sec" id="contact" style="text-align:center">
+  <p class="sec-label reveal">// 04 CONTACT</p>
+  <h2 class="sec-title reveal d1">LET'S<br>TALK</h2>
+  <div class="divider reveal d2" style="margin:0 auto 30px;"></div>
+  <p class="reveal d2" style="color:var(--muted);font-size:17px;line-height:1.8;max-width:500px;margin:0 auto">Have a project in mind? Let's build something exceptional together.</p>
+  <div class="contact-grid">
+    <a href="tel:+96407721432713" class="contact-item reveal d1">
+      <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.1 2.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      <div class="ci-label">PHONE</div>
+      <div class="ci-val">+964 07721432713</div>
+    </a>
+    <a href="mailto:xgxhxgvxvx@gmaiil.com" class="contact-item reveal d2">
+      <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <div class="ci-label">EMAIL</div>
+      <div class="ci-val">xgxhxgvxvx@gmaiil.com</div>
+    </a>
+    <a href="https://github.com/" target="_blank" class="contact-item reveal d3">
+      <svg class="ci-icon" viewBox="0 0 24 24" fill="var(--accent)"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+      <div class="ci-label">GITHUB</div>
+      <div class="ci-val">github.com/</div>
+    </a>
+    <div class="contact-item reveal d3">
+      <svg class="ci-icon" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+      <div class="ci-label">LOCATION</div>
+      <div class="ci-val">Iraq</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-name">MUHAMMAD SALAH</div>
+  <div class="ft-copy">© 2025 — ALL RIGHTS RESERVED</div>
+</footer>
+
+<script>
+const cur=document.getElementById('cursor'),rng=document.getElementById('ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;rng.style.left=rx+'px';rng.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button,.skill-card,.project-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='6px';cur.style.height='6px';rng.style.width='60px';rng.style.height='60px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='12px';cur.style.height='12px';rng.style.width='40px';rng.style.height='40px';});
+});
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+resize();window.addEventListener('resize',resize);
+const pts=Array.from({length:80},()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*1.5+.5}));
+(function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=canvas.width;if(p.x>canvas.width)p.x=0;if(p.y<0)p.y=canvas.height;if(p.y>canvas.height)p.y=0;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(0,212,255,.25)';ctx.fill();});
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<130){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(0,212,255,${.07*(1-d/130)})`;ctx.lineWidth=.5;ctx.stroke();}}
+  requestAnimationFrame(draw);
+})();
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');const f=e.target.querySelector('.sk-fill');if(f){const w=f.dataset.w||'80';setTimeout(()=>{f.style.width=w+'%';},300);}}});},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
